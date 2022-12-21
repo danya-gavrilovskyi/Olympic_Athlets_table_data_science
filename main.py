@@ -1,5 +1,10 @@
 import argparse
 
+def head_taker(filename):
+    with open(filename, 'r') as file:
+        head = file.readline().strip().split('\t')
+        return head
+
 def task3(filename, *args):
     head = head_taker(filename)
     years_and_medals = {}
