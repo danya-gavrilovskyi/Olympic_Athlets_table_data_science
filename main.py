@@ -90,6 +90,44 @@ def task3(filename, *args):
             print(f"The most medals {country} earned in {dict_keys[dict_values.index(max_medals)]}'s year and the number was {max_medals}")
     return dict_values, dict_keys
 
+def task4(filename):
+    head = head_taker(filename)
+    country = input('Enter country(by name or code): ')
+    first_olymp_year = None
+    first_olymp_place = None
+    years = []
+    gold_medals_count = 0
+    silver_medals_count = 0
+    bronze_medals_count = 0
+    with open(filename, 'r') as file:
+        for line in file.readlines():
+            data = line.strip().split('\t')
+            if (data[head.index('NOC')] == country or data[head.index('Team')] == country) and data[head.index('Year')] not in years:
+                years.append(data[head.index('Year')])
+
+            if (data[head.index('NOC')] == country or data[head.index('Team')] == country) and data[head.index('Medal')] == 'Gold':
+                gold_medals_count += 1
+            elif (data[head.index('NOC')] == country or data[head.index('Team')] == country) and data[head.index('Medal')] == 'Silver':
+                silver_medals_count += 1
+            elif (data[head.index('NOC')] == country or data[head.index('Team')] == country) and data[head.index('Medal')] == 'Bronze':
+                bronze_medals_count += 1
+
+            if (data[head.index('NOC')] == country or data[head.index('Team')] == country) and first_olymp_year == None:
+                first_olymp_year = data[head.index('Year')]
+                first_olymp_place = data[head.index('City')]
+            elif first_olymp_year != None and (data[head.index('NOC')] == country or data[head.index('Team')] == country) and data[head.index('Year')] < first_olymp_year:
+                first_olymp_year = data[head.index('Year')]
+                first_olymp_place = data[head.index('City')]
+
+    average_gold_medals = gold_medals_count / len(years)
+    average_silver_medals = silver_medals_count / len(years)
+    average_bronze_medals = bronze_medals_count / len(years)
+    print(f'First olympiade for {country} was in {first_olymp_year} and that was in {first_olymp_place}')
+    dict_values, dict_keys = task3(filename, [country])
+    min_medals = min(dict_values)
+    print(f"The fewest medals {country} earned in {dict_keys[dict_values.index(min_medals)]}'s year and the number was {min_medals}")
+    print(f'Average number of gold medals: {average_gold_medals}\nAverage number of silver medals: {average_silver_medals}\nAverage number of bronze medals: {average_bronze_medals}')
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('filename')
