@@ -24,3 +24,6 @@ def main():
     elif sys.argv[2] == '--interactive':
         args = parser.parse_args()
         task4(args.filename)
+
+if __name__ == '__main__':
+    main()
