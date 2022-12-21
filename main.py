@@ -50,6 +50,26 @@ def first_task(file_name, medals, NOC, Year, output, total):
                 output_file.write(i)
                 output_file.close()
             print(i, end='')
+def second_task(file_name, Year):
+    with open(file_name, 'r') as file:
+        gold = 0
+        silver = 0
+        bronze = 0
+        head = file.readline().strip().split('\t')
+        all_medalists = {}
+        for line in file.readlines():
+            data = line.strip().split('\t')
+            if Year == data[head.index('Year')] and data[head.index('NOC')] not in all_medalists and data[head.index('Medal')] != 'NA':
+                all_medalists[data[head.index('NOC')]] = [0,0,0]
+            if Year == data[head.index('Year')] and data[head.index('Medal')] == 'Gold' and data[head.index('NOC')] in all_medalists:
+                all_medalists[data[head.index('NOC')]][0] += 1
+            elif Year == data[head.index('Year')] and data[head.index('Medal')] == 'Silver' and data[head.index('NOC')] in all_medalists:
+                all_medalists[data[head.index('NOC')]][1] += 1
+            elif Year == data[head.index('Year')] and data[head.index('Medal')] == 'Bronze' and data[head.index('NOC')] in all_medalists:
+                all_medalists[data[head.index('NOC')]][2] += 1
+        for country, medals in all_medalists.items():
+            print(country, medals)
+
 def task3(filename, *args):
     head = head_taker(filename)
     years_and_medals = {}
@@ -87,7 +107,7 @@ def main():
     elif sys.argv[2] == '--total':
         parser.add_argument('year')
         args = parser.parse_args()
-        task2(args.filename, args.year)
+        second_task(args.filename, args.year)
     elif sys.argv[2] == '--overall':
         args = parser.parse_args()
         task3(args.filename, args.overall)
