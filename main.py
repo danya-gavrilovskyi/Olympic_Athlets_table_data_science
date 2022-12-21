@@ -1,10 +1,55 @@
 import argparse
-
+import sys
 def head_taker(filename):
     with open(filename, 'r') as file:
         head = file.readline().strip().split('\t')
         return head
+def first_task(file_name, medals, NOC, Year, output, total):
+    with open(file_name, 'r') as file:
+        countries_medals = {}
+        count = 0
+        medalist = []
+        gold = 0
+        silver = 0
+        bronze = 0
+        head = file.readline().strip().split('\t')
+        right_year = True
+        right_country = True
+        for line in file.readlines():
+            data = line.strip().split('\t')
+            right_country = False if NOC != data[head.index('NOC')] else right_country
+            right_year = False if Year != data[head.index('Year')] else right_year
+            if NOC == data[head.index('NOC')] and Year == data[head.index('Year')] and data[head.index('Medal')] != 'NA':
+                if count < 10:
+                    count += 1
+                    medalist.append(f'{data[head.index("Name")]} - {data[head.index("NOC")]} - {data[head.index("Medal")]}\n')
+                if data[head.index('Medal')] == 'Gold' and NOC == data[head.index('NOC')]:
+                    gold += 1
+                else:
+                    gold += 0
+                if data[head.index('Medal')] == 'Silver' and NOC == data[head.index('NOC')]:
+                    silver += 1
+                else:
+                    silver += 0
+                if data[head.index('Medal')] == 'Bronze' and NOC == data[head.index('NOC')]:
+                    bronze += 1
+                else:
+                    bronze += 0
 
+        print('First 10:')
+        medalist.append(f'Gold - {gold}\n')
+        medalist.append(f'Silver - {silver}\n')
+        medalist.append(f'Bronze - {bronze}\n')
+        if right_country == False:
+            print('Wrong country')
+        if right_year == False:
+            print('Wrong year')
+        for i in medalist:
+            if output != None:
+                output_file = open(output, 'a')
+                output_file.write(i)
+                output_file.close()
+            print(i, end='')
 def task3(filename, *args):
     head = head_taker(filename)
     years_and_medals = {}
@@ -38,7 +83,7 @@ def main():
         parser.add_argument('year')
         parser.add_argument('--output')
         args = parser.parse_args()
-        task1(args.filename, args.country, args.year, args.output)
+        first_task(args.filename, args.country, args.year, args.output)
     elif sys.argv[2] == '--total':
         parser.add_argument('year')
         args = parser.parse_args()
