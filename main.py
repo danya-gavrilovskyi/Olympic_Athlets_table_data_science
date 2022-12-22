@@ -69,8 +69,16 @@ def second_task(file_name, Year):
                 all_medalists[data[head.index('NOC')]][1] += 1
             elif Year == data[head.index('Year')] and data[head.index('Medal')] == 'Bronze' and data[head.index('NOC')] in all_medalists:
                 all_medalists[data[head.index('NOC')]][2] += 1
-        for country, medals in all_medalists.items():
-            print(country, medals)
+        sorted_values = sorted(all_medalists.values())
+        new_sorted_medalists = {}
+        for i in sorted_values:
+            for k in all_medalists.keys():
+                if all_medalists[k] == i:
+                    new_sorted_medalists[k] = all_medalists[k]
+                    break
+        items = list(new_sorted_medalists.items())
+        y = {k: v for k, v in reversed(items)}
+        print(y)
 
 def task3(filename, *args):
     head = head_taker(filename)
