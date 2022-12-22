@@ -4,7 +4,7 @@ def head_taker(filename):
     with open(filename, 'r') as file:
         head = file.readline().strip().split('\t')
         return head
-def first_task(file_name, medals, NOC, Year, output, total):
+def first_task(file_name, NOC, Year, output=None,):
     with open(file_name, 'r') as file:
         countries_medals = {}
         count = 0
@@ -23,15 +23,17 @@ def first_task(file_name, medals, NOC, Year, output, total):
                 if count < 10:
                     count += 1
                     medalist.append(f'{data[head.index("Name")]} - {data[head.index("NOC")]} - {data[head.index("Medal")]}\n')
-                if data[head.index('Medal')] == 'Gold' and NOC == data[head.index('NOC')]:
+                else:
+                    break
+                if data[head.index('Medal')] == 'Gold' and NOC == data[head.index('NOC')] and Year == data[head.index('Year')]:
                     gold += 1
                 else:
                     gold += 0
-                if data[head.index('Medal')] == 'Silver' and NOC == data[head.index('NOC')]:
+                if data[head.index('Medal')] == 'Silver' and NOC == data[head.index('NOC')]  and Year == data[head.index('Year')]:
                     silver += 1
                 else:
                     silver += 0
-                if data[head.index('Medal')] == 'Bronze' and NOC == data[head.index('NOC')]:
+                if data[head.index('Medal')] == 'Bronze' and NOC == data[head.index('NOC')]  and Year == data[head.index('Year')]:
                     bronze += 1
                 else:
                     bronze += 0
